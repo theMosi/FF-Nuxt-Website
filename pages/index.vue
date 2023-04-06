@@ -1,3 +1,4 @@
 <template>
-    
+    <Slider />
+    <Features />
 </template>
