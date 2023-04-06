@@ -3,4 +3,5 @@
     <Features />
     <ProductTabs />
     <AboutUs />
+    <ContactUs />
 </template>
