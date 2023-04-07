@@ -9,23 +9,31 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form_container">
-                        <form @submit="sendFunc">
+
+                        <div v-if="errors.length > 0" class="alert alert-danger">
+                            <ul class="mb-0">
+                                <li v-for="(error,index) in errors" :key="index">{{ error }}</li>
+                            </ul>
+                        </div>
+
+                        <form @submit.prevent="sendFunc">
                             <div>
-                                <input type="text" class="form-control" placeholder="نام و نام خانوادگی" />
+                                <input type="text" v-model="formData.name" class="form-control" placeholder="نام و نام خانوادگی" />
                             </div>
                             <div>
-                                <input type="email" class="form-control" placeholder="ایمیل" />
+                                <input type="email" v-model="formData.email" class="form-control" placeholder="ایمیل" />
                             </div>
                             <div>
-                                <input type="text" class="form-control" placeholder="موضوع پیام" />
+                                <input type="text" v-model="formData.subject" class="form-control" placeholder="موضوع پیام" />
                             </div>
                             <div>
-                                <textarea rows="10" style="height: 100px" class="form-control"
+                                <textarea rows="10" style="height: 100px" v-model="formData.text" class="form-control"
                                     placeholder="متن پیام"></textarea>
                             </div>
                             <div class="btn_box">
-                                <button>
+                                <button type="submit">
                                     ارسال پیام
+                                    <div v-if="loading" class="spinner-border spinner-border-sm ms-2"></div>
                                 </button>
                             </div>
                         </form>
@@ -42,9 +50,41 @@
 </template>
 
 <script setup>
+import {useToast} from "vue-toastification";
+const {public:{apiBase}} = useRuntimeConfig();
 
-let sendFunc = () => {
-    
+const toast = useToast();
+
+const errors = ref([]);
+const loading = ref(false);
+const formData = reactive({
+    name: "",
+    email: "",
+    subject: "",
+    text: ""
+})
+
+
+async function sendFunc () {
+
+    if(formData.name === '' || formData.email === '' || formData.subject === '' || formData.text === ''){
+        toast.error("پر کردن تمامی موارد فرم تماس با ما الزامی است ");
+        return;
+    }
+
+    try {
+        loading.value = true;
+        errors.value = [];
+        const data = await $fetch(`${apiBase}/contact-us`,{
+            method:'POST',
+            body: formData
+        })
+        toast.success("پیام شما با موفقیت ثبت شد");
+    } catch (error) {
+        errors.value = Object.values(error.data.message).flat();        
+    }finally{
+        loading.value = false;
+    }
 }
 
 </script>
