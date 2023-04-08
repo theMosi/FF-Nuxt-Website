@@ -1,3 +1,15 @@
+
+import { NuxtLink } from '~/.nuxt/components';
+
+
+import { NuxtLink } from '~/.nuxt/components';
+
+
+import { NuxtLink } from '~/.nuxt/components';
+
+
+import { NuxtLink } from '~/.nuxt/components';
+
 <template>
         <div  class="sub_page">
         <div class="hero_area">
@@ -5,11 +17,11 @@
             <header class="header_section">
                 <div class="container">
                     <nav class="navbar navbar-expand-lg custom_nav-container">
-                        <a class="navbar-brand" href="index.html">
+                        <NuxtLink class="navbar-brand" to="/">
                             <span>
                                 maSite
                             </span>
-                        </a>
+                        </NuxtLink>
 
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -19,17 +31,17 @@
 
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav mx-auto">
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="index.html">صفحه اصلی</a>
+                                <li class="nav-item" :class="{ active: $route.path === '/'}">
+                                    <NuxtLink class="nav-link" to="/">صفحه اصلی</NuxtLink>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="menu.html">منو</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="about.html">درباره ما</a>
+                                <li class="nav-item" :class="{active: $route.path === '/about-us'}">
+                                    <NuxtLink class="nav-link" to="/about-us">درباره ما</NuxtLink>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="contact.html">تماس باما</a>
+                                <li class="nav-item" :class="{active: $route.path === '/contact-us'}">
+                                    <NuxtLink class="nav-link" to="/contact-us">تماس باما</NuxtLink>
                                 </li>
                             </ul>
                             <div class="user_option">
