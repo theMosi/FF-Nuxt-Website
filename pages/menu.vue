@@ -57,18 +57,24 @@
                     </div>
                 </div>
                 <div class="col-sm-12 col-lg-9">
-                    <div class="row gx-3">
-                        <div v-for="product in data.products" :key="product.id" class="col-sm-6 col-lg-4">
+                    <div v-if="pending" class="d-flex justify-content-center align-items-center h-100">
+                        <div class="spinner-border"></div>
+                    </div>
+
+                    <template v-else>
+                        <div class="row gx-3">
+                        <div v-for="product in data.data.products" :key="product.id" class="col-sm-6 col-lg-4">
                             <ProductCard :product="product" />
                         </div>
                     </div>
                     <nav class="d-flex justify-content-center mt-5">
                         <ul class="pagination">
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li @click="pageFilter({page: link.label})" v-for="(link,index) in data.data.meta.links.slice(1,-1)" :key="index" class="page-item" :class="{active: link.active}">
+                                <button class="page-link" href="#">{{link.label}}</button>
+                            </li>
                         </ul>
                     </nav>
+                    </template>
                 </div>
             </div>
         </div>
@@ -77,11 +83,23 @@
 
 <script setup>
 
+const query = ref({});
+
 const {public : {apiBase}} = useRuntimeConfig();
 
 const {data: categories} = await $fetch(`${apiBase}/categories`);
 
-const { data } = await $fetch(`${apiBase}/menu`);
+const { data, refresh, pending } = await useFetch(() => `${apiBase}/menu`,{
+    query: query
+});
 
+
+function pageFilter(param) {
+
+    query.value = {...param};
+
+    refresh();
+
+}
 
 </script>
