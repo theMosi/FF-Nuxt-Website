@@ -28,28 +28,29 @@
                     <div>
                         <label class="form-label">مرتب سازی</label>
                         <div class="form-check my-2">
-                            <input @click="handleFilter({sortBy: 'max' })" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <input @click="handleFilter({sortBy: 'max' })" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                            :checked="route.query.hasOwnProperty('sortBy') && route.query.sortBy == 'max'">
                             <label class="form-check-label cursor-pointer" for="flexRadioDefault1">
                                 بیشترین قیمت
                             </label>
                         </div>
                         <div class="form-check my-2">
                             <input @click="handleFilter({sortBy: 'min' })"  class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                checked>
+                            :checked="route.query.hasOwnProperty('sortBy') && route.query.sortBy == 'min'">
                             <label class="form-check-label cursor-pointer" for="flexRadioDefault2">
                                 کمترین قیمت
                             </label>
                         </div>
                         <div class="form-check my-2">
                             <input @click="handleFilter({sortBy: 'bestseller' })" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
-                                checked>
+                            :checked="route.query.hasOwnProperty('sortBy') && route.query.sortBy == 'bestseller'">
                             <label class="form-check-label cursor-pointer" for="flexRadioDefault3">
                                 پرفروش ترین
                             </label>
                         </div>
                         <div class="form-check my-2">
                             <input @click="handleFilter({sortBy: 'sale' })" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4"
-                                checked>
+                            :checked="route.query.hasOwnProperty('sortBy') && route.query.sortBy == 'sale'">
                             <label class="form-check-label cursor-pointer" for="flexRadioDefault4">
                                 با تخفیف
                             </label>
