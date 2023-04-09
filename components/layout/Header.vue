@@ -51,9 +51,9 @@ import { NuxtLink } from '~/.nuxt/components';
                                         3
                                     </span>
                                 </a>
-                                <a href="login.html" class="btn-auth">
+                                <NuxtLink to="/auth/login" class="btn-auth">
                                     ورود
-                                </a>
+                                </NuxtLink>
                             </div>
                         </div>
                     </nav>
