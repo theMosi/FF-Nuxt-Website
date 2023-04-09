@@ -6,7 +6,7 @@
                     <div>
                         <label class="form-label">جستجو</label>
                         <div class="input-group mb-3">
-                            <input type="text" v-model="search" class="mmd form-control" placeholder="نام محصول ..."
+                            <input type="text" v-model="search" class="mmd form-control" @input="checkSearchBox" placeholder="نام محصول ..."
                                 aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <button @click="search !== '' && handleFilter({search: search})" class="input-group-text" id="basic-addon2">
                                 <i class="bi bi-search"></i>
@@ -126,6 +126,19 @@ function handleFilter(param) {
     })
 
     refresh();
+}
+
+function checkSearchBox(element){
+    if(element.target.value == ''){
+        if(query.value.hasOwnProperty('search')){
+            delete query.value.search
+        }
+
+        router.push({
+        path:'/menu',
+        query: query.value
+    })
+    }
 }
 
 
