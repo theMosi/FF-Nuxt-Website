@@ -108,6 +108,10 @@ function handleFilter(param) {
 
     query.value = {...route.query ,...param};
 
+    if(!param.hasOwnProperty('page')){
+        delete query.value.page;
+    }
+
     router.push({
         path:'/menu',
         query: query.value
