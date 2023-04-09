@@ -105,6 +105,13 @@ const { data, refresh, pending } = await useFetch(() => `${apiBase}/menu`,{
 });
 
 
+watch(route,() => {
+    if(Object.keys(route.query).length == 0){
+        query.value = {};
+        refresh();
+    }
+})
+
 function handleFilter(param) {
 
     query.value = {...route.query ,...param};
