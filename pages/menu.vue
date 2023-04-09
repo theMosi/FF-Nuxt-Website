@@ -6,11 +6,11 @@
                     <div>
                         <label class="form-label">جستجو</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="نام محصول ..."
+                            <input type="text" v-model="search" class="mmd form-control" placeholder="نام محصول ..."
                                 aria-label="Recipient's username" aria-describedby="basic-addon2">
-                            <a href="#" class="input-group-text" id="basic-addon2">
+                            <button @click="search !== '' && handleFilter({search: search})" class="input-group-text" id="basic-addon2">
                                 <i class="bi bi-search"></i>
-                            </a>
+                            </button>
                         </div>
                     </div>
                     <hr>
@@ -19,7 +19,7 @@
                             دسته بندی
                         </div>
                         <ul>
-                            <li v-for="category in categories" :key="category.id" class="my-2 cursor-pointer">
+                            <li v-for="category in categories" :key="category.id" @click="handleFilter({category: category.id})"  class="my-2 cursor-pointer">
                                 {{ category.name }}
                             </li>
                         </ul>
@@ -28,27 +28,27 @@
                     <div>
                         <label class="form-label">مرتب سازی</label>
                         <div class="form-check my-2">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <input @click="handleFilter({sortBy: 'max' })" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                             <label class="form-check-label cursor-pointer" for="flexRadioDefault1">
                                 بیشترین قیمت
                             </label>
                         </div>
                         <div class="form-check my-2">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                            <input @click="handleFilter({sortBy: 'min' })"  class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
                                 checked>
                             <label class="form-check-label cursor-pointer" for="flexRadioDefault2">
                                 کمترین قیمت
                             </label>
                         </div>
                         <div class="form-check my-2">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
+                            <input @click="handleFilter({sortBy: 'bestseller' })" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
                                 checked>
                             <label class="form-check-label cursor-pointer" for="flexRadioDefault3">
                                 پرفروش ترین
                             </label>
                         </div>
                         <div class="form-check my-2">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4"
+                            <input @click="handleFilter({sortBy: 'sale' })" class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4"
                                 checked>
                             <label class="form-check-label cursor-pointer" for="flexRadioDefault4">
                                 با تخفیف
@@ -62,18 +62,23 @@
                     </div>
 
                     <template v-else>
-                        <div class="row gx-3">
+                        <div v-if="data.data.products.length == 0" class="d-flex justify-content-center align-items-center h-100">
+                            <h5>مجصولی یافت نشد!</h5>
+                        </div>
+                        <div v-else>
+                            <div class="row gx-3">
                         <div v-for="product in data.data.products" :key="product.id" class="col-sm-6 col-lg-4">
                             <ProductCard :product="product" />
                         </div>
                     </div>
                     <nav class="d-flex justify-content-center mt-5">
                         <ul class="pagination">
-                            <li @click="pageFilter({page: link.label})" v-for="(link,index) in data.data.meta.links.slice(1,-1)" :key="index" class="page-item" :class="{active: link.active}">
+                            <li @click="handleFilter({page: link.label})" v-for="(link,index) in data.data.meta.links.slice(1,-1)" :key="index" class="page-item" :class="{active: link.active}">
                                 <button class="page-link" href="#">{{link.label}}</button>
                             </li>
                         </ul>
                     </nav>
+                        </div>
                     </template>
                 </div>
             </div>
@@ -82,24 +87,34 @@
 </template>
 
 <script setup>
+const {public : {apiBase}} = useRuntimeConfig();
+const router = useRouter();
+const route = useRoute();
 
 const query = ref({});
+const search = ref('');
 
-const {public : {apiBase}} = useRuntimeConfig();
+
 
 const {data: categories} = await $fetch(`${apiBase}/categories`);
 
+query.value = route.query;
 const { data, refresh, pending } = await useFetch(() => `${apiBase}/menu`,{
     query: query
 });
 
 
-function pageFilter(param) {
+function handleFilter(param) {
 
-    query.value = {...param};
+    query.value = {...route.query ,...param};
+
+    router.push({
+        path:'/menu',
+        query: query.value
+    })
 
     refresh();
-
 }
+
 
 </script>
