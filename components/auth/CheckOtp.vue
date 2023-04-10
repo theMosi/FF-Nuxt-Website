@@ -9,21 +9,19 @@
         </div>
     
         <div class="form_container">
-            <form @submit.prevent="checkOtp">
                 <div class="mb-3">
                     <label for="cellphone" class="form-label">کد تایید </label>
                     <input v-model="otp" type="text" class="form-control" id="cellphone">
                 </div>
                 
                 <div class="d-flex align-items-center justify-content-between">
-                    <button type="submit" class="btn btn-primary btn-auth">
+                    <button @click="checkOtp" :disabled="loading" type="submit" class="btn btn-primary btn-auth">
                         تایید
                         <div v-if="loading" class="spinner-border spinner-border-sm ms-2"></div>
                     </button>
-                    <AuthResendOtp />
+                    <AuthResendOtp @resend-otp-errors="(err) => errors = err" />
                 </div>
-                
-            </form>
+
         </div>
     </div>
     
@@ -64,8 +62,9 @@
                 body: {otp: otp.value}
             })
 
-            toast.success('با موفقیت وارد شدید')
             authUser.value = data;
+            toast.success('با موفقیت وارد شدید')
+            return navigateTo('/')
     
         } catch (error) {
             errors.value = Object.values(error.data.data.message).flat();
