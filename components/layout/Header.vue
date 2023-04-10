@@ -51,7 +51,7 @@ import { NuxtLink } from '~/.nuxt/components';
                                         3
                                     </span>
                                 </a>
-                                <NuxtLink v-if="authUser" to="/auth/profile" class="btn-auth">
+                                <NuxtLink v-if="authUser" to="/profile" class="btn-auth">
                                     پروفایل
                                 </NuxtLink>
                                 <NuxtLink v-else to="/auth/login" class="btn-auth">

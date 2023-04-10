@@ -15,6 +15,10 @@
 
 <script setup>
 
+definePageMeta({
+    middleware: 'guest'
+})
+
 const showOtpForm = ref(false);
 
 </script>
